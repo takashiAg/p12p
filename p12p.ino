@@ -1,75 +1,93 @@
 const int analogInPin = A0;
 
 
-const int driver_pinA = 2,
-          driver_pinB = 3,
-          driver_pinC = 4;
-
-
 int moter_pos = 0;
-//int   moter_pos_real = 0;
+class Moter_p12p {
+  public:
+    int  pin_A,
+         pin_B,
+         pin_Speed,
+         pin_ref;
+    Moter_p12p(int driver_pin_A, int driver_pin_B, int driver_pin_C, int analog_input_pin) {
+      pin_A = driver_pin_A;
+      pin_B = driver_pin_B;
+      pin_Speed = driver_pin_C;
+      pin_ref = analog_input_pin;
+    }
+    void update_position() {
+      int moter_pos_real = get_moter_pos();
+      if (moter_pos_real - moter_pos < -10)
+        extend_moter();
+      else if (moter_pos_real - moter_pos > 10)
+        shrink_moter();
+      else
+        stop_moter();
+    }
+    void set_moter(int pos) {
+      moter_pos = pos;
+    }
+  private:
+    void extend_moter() {
+      digitalWrite(pin_B, LOW);
+      digitalWrite(pin_A, HIGH);
+      digitalWrite(pin_Speed, HIGH);
+
+    }
+    void shrink_moter() {
+      digitalWrite(pin_A, LOW);
+      digitalWrite(pin_B, HIGH);
+      digitalWrite(pin_Speed, HIGH);
+    }
+    void stop_moter() {
+      digitalWrite(pin_Speed, LOW);
+      digitalWrite(pin_A, LOW);
+      digitalWrite(pin_B, LOW);
+    }
+
+    int get_moter_pos() {
+      return map(analogRead(pin_ref), 0, 1023, 0, 100);
+    }
+};
+
+Moter_p12p moter_1 = Moter_p12p(2, 3, 4, A0),
+           moter_2 = Moter_p12p(5, 6, 7, A1);
 
 void setup() {
   Serial.begin(9600);
 }
+
+
 void loop() {
   if (Serial.available() > 0) {
     int  charactor = Serial.read();
     switch (charactor) {
       case 'a':
-        set_moter(100);
+        moter_1.set_moter(100);
+        moter_2.set_moter(100);
         break;
       case 'b':
-        set_moter(66);
+        moter_1.set_moter(66);
+        moter_2.set_moter(66);
         break;
       case 'c':
-        set_moter(33);
+        moter_1.set_moter(33);
+        moter_2.set_moter(33);
         break;
       case 'd':
-        set_moter(0);
+        moter_1.set_moter(0);
+        moter_2.set_moter(0);
         break;
     }
   }
 
   //必ず挿れて
-  update_position();
-
-  Serial.print(get_moter_pos()); Serial.print('\t');
-  //  Serial.print(pos);
-  Serial.print('\n');
+  moter_1.update_position();
+  moter_2.update_position();
+  //
+  //  Serial.print(get_moter_pos()); Serial.print('\t');
+  //  //  Serial.print(pos);
+  //  Serial.print('\n');
 }
 
-int get_moter_pos() {
-  return map(analogRead(analogInPin), 0, 1023, 0, 100);
-}
 
-void extend_moter() {
-  digitalWrite(driver_pinB, LOW);
-  digitalWrite(driver_pinA, HIGH);
-  digitalWrite(driver_pinC, HIGH);
 
-}
-void shrink_moter() {
-  digitalWrite(driver_pinA, LOW);
-  digitalWrite(driver_pinB, HIGH);
-  digitalWrite(driver_pinC, HIGH);
-}
-void stop_moter() {
-  digitalWrite(driver_pinC, LOW);
-  digitalWrite(driver_pinA, LOW);
-  digitalWrite(driver_pinB, LOW);
-}
-
-void update_position() {
-  int moter_pos_real = get_moter_pos();
-  if (moter_pos_real - moter_pos < -10)
-    extend_moter();
-  else if (moter_pos_real - moter_pos > 10)
-    shrink_moter();
-  else
-    stop_moter();
-}
-
-void set_moter(int pos) {
-  moter_pos = pos;
-}
