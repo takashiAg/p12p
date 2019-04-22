@@ -26,4 +26,4 @@ d - 100%(伸びる)
 
 # python使ってください
 pip3 install pyaudio
-python main.py
+python3 main.py
