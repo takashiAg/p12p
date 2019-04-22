@@ -1,18 +1,16 @@
-const int analogInPin = A0;
-
-
-int moter_pos = 0;
 class Moter_p12p {
   public:
     int  pin_A,
          pin_B,
          pin_Speed,
-         pin_ref;
+         pin_ref,
+         moter_pos;
     Moter_p12p(int driver_pin_A, int driver_pin_B, int driver_pin_C, int analog_input_pin) {
       pin_A = driver_pin_A;
       pin_B = driver_pin_B;
       pin_Speed = driver_pin_C;
       pin_ref = analog_input_pin;
+      moter_pos=0;
     }
     void update_position() {
       int moter_pos_real = get_moter_pos();
@@ -52,12 +50,15 @@ class Moter_p12p {
 Moter_p12p moter_1 = Moter_p12p(2, 3, 4, A0),
            moter_2 = Moter_p12p(5, 6, 7, A1);
 
+int point = 0;
+
 void setup() {
   Serial.begin(9600);
 }
 
 
 void loop() {
+
   if (Serial.available() > 0) {
     int  charactor = Serial.read();
     switch (charactor) {
@@ -98,15 +99,18 @@ void loop() {
         moter_2.set_moter(0);
         break;
     }
+    point++;
   }
+
+  Serial.print(moter_1.moter_pos);
+  Serial.print('\t');
+  Serial.print(moter_2.moter_pos);
+  Serial.println('\n');
 
   //必ず挿れて
   moter_1.update_position();
   moter_2.update_position();
-  //
-  //  Serial.print(get_moter_pos()); Serial.print('\t');
-  //  //  Serial.print(pos);
-  //  Serial.print('\n');
+  delay(100);
 }
 
 
