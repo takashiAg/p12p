@@ -60,16 +60,44 @@ void setup() {
 void loop() {
 
   if (Serial.available() > 0) {
-    int charactor = Serial.read();
-    
-    if (charactor > 100) {
-      point = 0;
-      return;
-    }
-    if (point == 0) {
-      moter_1.set_moter(charactor);
-    } else if (point == 1) {
-      moter_2.set_moter(charactor);
+    int  charactor = Serial.read();
+    switch (charactor) {
+      case 'a':
+        moter_1.set_moter(100);
+        moter_2.set_moter(100);
+        break;
+      case 'b':
+        moter_1.set_moter(100);
+        moter_2.set_moter(50);
+        break;
+      case 'c':
+        moter_1.set_moter(100);
+        moter_2.set_moter(0);
+        break;
+      case 'd':
+        moter_1.set_moter(50);
+        moter_2.set_moter(100);
+        break;
+      case 'e':
+        moter_1.set_moter(50);
+        moter_2.set_moter(50);
+        break;
+      case 'f':
+        moter_1.set_moter(50);
+        moter_2.set_moter(0);
+        break;
+      case 'g':
+        moter_1.set_moter(0);
+        moter_2.set_moter(100);
+        break;
+      case 'h':
+        moter_1.set_moter(0);
+        moter_2.set_moter(50);
+        break;
+      case 'i':
+        moter_1.set_moter(0);
+        moter_2.set_moter(0);
+        break;
     }
     point++;
   }
