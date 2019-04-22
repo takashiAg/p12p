@@ -66,14 +66,34 @@ void loop() {
         moter_2.set_moter(100);
         break;
       case 'b':
-        moter_1.set_moter(66);
-        moter_2.set_moter(66);
+        moter_1.set_moter(100);
+        moter_2.set_moter(50);
         break;
       case 'c':
-        moter_1.set_moter(33);
-        moter_2.set_moter(33);
+        moter_1.set_moter(100);
+        moter_2.set_moter(0);
         break;
       case 'd':
+        moter_1.set_moter(50);
+        moter_2.set_moter(100);
+        break;
+      case 'e':
+        moter_1.set_moter(50);
+        moter_2.set_moter(50);
+        break;
+      case 'f':
+        moter_1.set_moter(50);
+        moter_2.set_moter(0);
+        break;
+      case 'g':
+        moter_1.set_moter(0);
+        moter_2.set_moter(100);
+        break;
+      case 'h':
+        moter_1.set_moter(0);
+        moter_2.set_moter(50);
+        break;
+      case 'i':
         moter_1.set_moter(0);
         moter_2.set_moter(0);
         break;
