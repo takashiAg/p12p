@@ -7,7 +7,7 @@ b - 33%
 c - 66%
 d - 100%(伸びる)
 
-#pin connection
+# pin connection
 - moter1
   - P+ → 5V
   - P- → GND
@@ -23,3 +23,7 @@ d - 100%(伸びる)
   - 5 → BIN1
   - 6 → BIN2
   - 7 → PWMB
+
+# python使ってください
+pip3 install pyaudio
+python main.py
